@@ -1,0 +1,11 @@
+@use "colors";
+
+$american: map-get(colors.$flat-ui, "american");
+
+$primary: map-get($american, 'orangeville');
+$success: map-get($american, 'mint-leaf');
+$info: map-get($american, 'electron-blue');
+$warning: map-get($american, 'bright-yarrow');
+$danger: map-get($american, 'chi-gong');
+
+$body-bg: map-get($american, 'city-lights');

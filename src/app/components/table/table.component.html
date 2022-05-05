@@ -1,0 +1,67 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th *ngFor="let column of columns" scope="col">
+      <button type="button" class="btn btn-link text-decoration-none" (click)="changeTableSorting(column)">
+        {{column.value}}
+        <ng-container *ngIf="sortedColumn === column.key">
+          <i *ngIf="sortDirection === 'desc'" class="bi bi-arrow-down-short"></i>
+          <i *ngIf="sortDirection === 'asc'" class="bi bi-arrow-up-short"></i>
+        </ng-container>
+      </button>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let record of displayData" style="cursor: pointer;">
+    <td *ngFor="let column of columns">
+      <ng-container [ngSwitch]="column.value">
+        <ng-container *ngSwitchCase="dataRecordEnum.budget">
+          <ng-container *ngTemplateOutlet="budgetTempate; context: { $implicit: record };"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="dataRecordEnum.status">
+          <ng-container *ngTemplateOutlet="statusTemplate; context: { $implicit: record };"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="dataRecordEnum.created">
+          <ng-container *ngTemplateOutlet="dateTemplate; context: { $implicit: record.created };"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="dataRecordEnum.modified">
+          <ng-container *ngTemplateOutlet="dateTemplate; context: { $implicit: record.modified };"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          {{record[column.key]}}
+        </ng-container>
+      </ng-container>
+    </td>
+  </tr>
+  </tbody>
+
+</table>
+
+
+<ng-template #budgetTempate let-record>
+  <p class="m-0">{{record.budget | currency}}</p>
+</ng-template>
+
+<ng-template #statusTemplate let-record>
+  <ng-container [ngSwitch]="record.status">
+    <ng-container *ngSwitchCase="'new'">
+      <rr-badge color="primary" [pillBadge]="true">{{record.status | titlecase}}</rr-badge>
+    </ng-container>
+    <ng-container *ngSwitchCase="'delivered'">
+      <rr-badge color="success" [pillBadge]="true">{{record.status | titlecase}}</rr-badge>
+    </ng-container>
+    <ng-container *ngSwitchCase="'archived'">
+      <rr-badge color="danger" [pillBadge]="true">{{record.status | titlecase}}</rr-badge>
+    </ng-container>
+    <ng-container *ngSwitchCase="'working'">
+      <rr-badge color="warning" [pillBadge]="true">{{record.status | titlecase}}</rr-badge>
+    </ng-container>
+<!--    <rr-badge *ngSwitchDefault color="dark" [pillBadge]="true">{{record.status}}</rr-badge>-->
+  </ng-container>
+</ng-template>
+
+<ng-template #dateTemplate let-date>
+  <p class="m-0 text-center">{{date}}</p>
+</ng-template>

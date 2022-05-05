@@ -1,0 +1,9 @@
+<h5 class="text-muted fw-bold">Full Data</h5>
+<ui-card>
+  <div header class="card-header">
+    <ui-date-range-picker [oldestDate]="oldestCreatedRecordDate$ | async"
+                          [earliestDate]="earliestModifiedRecordDate$ | async"></ui-date-range-picker>
+  </div>
+  <rr-table [columns]="recordKeys | keyvalue: originalOrder"
+            [data]="records$ | async"></rr-table>
+</ui-card>

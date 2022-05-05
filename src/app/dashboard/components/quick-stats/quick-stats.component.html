@@ -1,0 +1,19 @@
+<h5 class="text-muted fw-bold">Quick Stats</h5>
+
+<div class="row row-cols-3 g-2 g-lg-3">
+  <div class="col">
+    <ui-card>
+      <h3>{{(totalBudget$ | async) | currency}}</h3>
+      <h5>Total Budget</h5>
+    </ui-card>
+  </div>
+  <div class="col">
+    <ui-card>
+      <h3>{{(totalInProgress$ | async)}}</h3>
+      <h5>In Progress</h5>
+    </ui-card>
+  </div>
+  <div class="col">
+    <div class="p-3 border bg-light">Row column</div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<nav class="navbar navbar-light bg-primary">
+  <div class="container-fluid d-flex justify-content-between">
+    <a class="navbar-brand fw-bold" href="#">
+      <img src="../assets/images/logoipsum-logo-26.svg" alt="" width="46" height="36" class="d-inline-block">
+      Project Dashboard
+    </a>
+    <a>
+      <span class="pr-3">{{(userData$ | async)?.name?.first}}</span>
+      <img [src]="(userData$ | async)?.picture?.thumbnail" class="rounded-circle" />
+    </a>
+  </div>
+</nav>
