@@ -78,6 +78,12 @@ export function dataReducer(state: DataState = initialState, action: any): DataS
         ...state
       });
     }
+
+    case dataActions.DataActionTypes.ADD_NEW_RECORD: {
+      return dataAdapter.addOne(action.payload, {
+        ...state
+      });
+    }
   }
 
   return state;

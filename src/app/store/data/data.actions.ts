@@ -17,7 +17,8 @@ export enum DataActionTypes {
   GET_PROPERTY_FILTERS_SUCCESS ='[Data] Get Property Filters Success',
   SET_PROPERTY_FILTERS ='[Data] Set Property Filter Success',
   REMOVE_PROPERTY_FILTER ='[Data] Remove Property Filter Success',
-  UPDATE_RECORD = '[Data] Update Record'
+  UPDATE_RECORD = '[Data] Update Record',
+  ADD_NEW_RECORD = '[Data] Add New Record'
 }
 
 export class GetData implements Action {
@@ -79,6 +80,15 @@ export class RemovePropertyFilter implements Action {
 
 export class UpdateRecord implements Action {
   readonly type = DataActionTypes.UPDATE_RECORD;
+
+  constructor(public payload: DataRecord) {
+    console.log(payload);
+  }
+
+}
+
+export class AddNewRecord implements Action {
+  readonly type = DataActionTypes.ADD_NEW_RECORD;
 
   constructor(public payload: DataRecord) {
     console.log(payload);

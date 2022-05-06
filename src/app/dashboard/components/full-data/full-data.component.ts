@@ -3,6 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {map, Observable} from 'rxjs';
 import * as dataStore from '../../../store/data';
 import {
+  AddNewRecord,
   FilterDates,
   getEarliestDate,
   getOldestDate,
@@ -17,6 +18,7 @@ import {KeyValue} from '@angular/common';
 import {NgbDateAdapter, NgbDateStruct, NgbOffcanvas, OffcanvasDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {DateRange} from '../../../../../projects/ui/src/lib/components';
 import {FormControl, FormGroup} from '@angular/forms';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'rr-full-data',
@@ -58,6 +60,8 @@ export class FullDataComponent implements OnInit {
     budget: new FormControl(''),
     status: new FormControl(''),
     id: new FormControl(''),
+    created: new FormControl(''),
+    modified: new FormControl('')
   });
 
   constructor(private store: Store<any>,
@@ -136,6 +140,28 @@ export class FullDataComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  startNewProject(content: TemplateRef<any>) {
+    const emptyRecord = {
+      title: '',
+      division: '',
+      project_owner: '',
+      budget: 0,
+      status: 'new',
+      id: uuid.v4(),
+      created: new Date().toString()
+    }
+    this.editingRecordForm.patchValue(emptyRecord);
+
+    this.offcanvasService.open(content, {position: 'end'}).result.then((result) => {
+      this.store.dispatch(new AddNewRecord({
+        ...this.editingRecordForm.value,
+        budget: +this.editingRecordForm.get('budget')?.value,
+      }));
+    }, (reason) => {
+      this.editingRecordForm.reset();
+    });
   }
 
 }
