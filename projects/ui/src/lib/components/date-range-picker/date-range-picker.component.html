@@ -1,4 +1,4 @@
-<form class="row row-cols-sm-auto">
+<form class="row row-cols-sm-3">
   <div class="col-12">
     <div class="dp-hidden position-absolute">
       <div class="input-group">
@@ -11,15 +11,16 @@
                [autoClose]="'outside'"
                (dateSelect)="onDateSelection($event)"
                [displayMonths]="2"
-               [dayTemplate]="t"
+               [dayTemplate]="dayTemplate"
                outsideDays="hidden"
                [startDate]="earliestDate!"
                tabindex="-1">
-        <ng-template #t let-date let-focused="focused">
+        <ng-template #dayTemplate let-date let-focused="focused" let-selected="selected" let-disabled="disabled">
           <span class="custom-day"
+                [class.text-primary]="selected"
                 [class.focused]="focused"
                 [class.range]="isRange(date)"
-                [class.faded]="isHovered(date) || isInside(date)"
+                [class.fw-bolder]="isHovered(date) || isInside(date)"
                 (mouseenter)="hoveredDate = date"
                 (mouseleave)="hoveredDate = null">
             {{ date.day }}
@@ -47,6 +48,13 @@
              (input)="toDate = validateInput(toDate, dpToDate.value)">
       <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
         <i class="bi bi-calendar-range"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary text-white" [disabled]="!toDate || !fromDate" type="button" (click)="clearDates()">
+        Clear Dates
       </button>
     </div>
   </div>

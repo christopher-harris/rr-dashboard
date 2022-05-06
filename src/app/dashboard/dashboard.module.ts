@@ -8,6 +8,7 @@ import {FullDataComponent} from './components/full-data/full-data.component';
 import {RecentActivityComponent} from './components/recent-activity/recent-activity.component';
 import {SharedModule} from '../shared/shared/shared.module';
 import {UiModule} from '../../../projects/ui/src/lib/ui.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,10 @@ import {UiModule} from '../../../projects/ui/src/lib/ui.module';
   imports: [
     CommonModule,
     DashboardRoutingModule,
+    ReactiveFormsModule,
     SharedModule,
     UiModule,
+    FormsModule,
   ]
 })
 export class DashboardModule {

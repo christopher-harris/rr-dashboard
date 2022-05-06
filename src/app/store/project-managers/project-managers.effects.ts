@@ -12,9 +12,9 @@ export class ProjectManagersEffects {
   setProjectManagers$ = createEffect(() => this.actions$.pipe(
     ofType(ProjectManagersActionTypes.SET_PROJECT_MANAGERS),
     map((action: SetProjectManagers) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       const recordUsers = _.map(action.payload, 'project_owner');
-      console.log(recordUsers);
+      // console.log(recordUsers);
       const uniqueNames = _.uniq(recordUsers);
       const projectManagers = uniqueNames.map((name) => {
         this.userService.getProjectManagerData().pipe(

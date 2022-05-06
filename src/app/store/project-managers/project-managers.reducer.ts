@@ -15,7 +15,7 @@ export function projectManagersReducer(state: ProjectManagersState = initialStat
       return {...state};
     }
     case ProjectManagersActionTypes.SET_PROJECT_MANAGERS_SUCCESS: {
-      console.log(action.payload);
+      // console.log(action.payload);
       return projectManagersAdapter.addMany(action.payload, {...state});
     }
   }

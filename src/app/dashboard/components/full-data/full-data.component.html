@@ -1,9 +1,110 @@
 <h5 class="text-muted fw-bold">Full Data</h5>
 <ui-card>
   <div header class="card-header">
-    <ui-date-range-picker [oldestDate]="oldestCreatedRecordDate$ | async"
-                          [earliestDate]="earliestModifiedRecordDate$ | async"></ui-date-range-picker>
+    <div class="row">
+      <div class="col">
+        <input type="email"
+               class="form-control"
+               [formControl]="searchForm" placeholder="Search" />
+      </div>
+      <div class="col">
+        <ui-date-range-picker [oldestDate]="oldestCreatedRecordDate$ | async"
+                              [earliestDate]="earliestModifiedRecordDate$ | async"
+                              (datesChanged)="onDatesChanged($event)"></ui-date-range-picker>
+      </div>
+    </div>
+    <div class="row row-cols-4 mt-2">
+      <div class="col">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="titleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{dataProperties.title}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li *ngFor="let value of (titleFilter$ | async)">
+              <a class="dropdown-item" (click)="addPropertyFilter('title', value)">{{value}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="projectOwnerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{dataProperties.project_owner}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li *ngFor="let value of (projectManagersFilter$ | async)">
+              <a class="dropdown-item" (click)="addPropertyFilter('project_owner', value)">{{value}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="divisionDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{dataProperties.division}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li *ngFor="let value of (divisionFilter$ | async)">
+              <a class="dropdown-item" (click)="addPropertyFilter('division', value)">{{value}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{dataProperties.status}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li *ngFor="let value of (statusFilter$ | async)">
+              <a class="dropdown-item" (click)="addPropertyFilter('status', value)">{{value | titlecase}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
   <rr-table [columns]="recordKeys | keyvalue: originalOrder"
-            [data]="records$ | async"></rr-table>
+            [data]="records$ | async" (editRecord)="editRecord($event); openEditDrawer(content)"></rr-table>
 </ui-card>
+
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Edit Project</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form [formGroup]="editingRecordForm">
+      <div class="mb-3">
+        <label for="record-title" class="form-label">Title</label>
+        <input class="form-control" id="record-title" [formControlName]="'title'" />
+      </div>
+      <div class="mb-3">
+        <label for="record-owner" class="form-label">Project Owner</label>
+        <select id="record-owner" class="form-select" [formControlName]="'project_owner'">
+          <option *ngFor="let option of (projectManagersFilter$ | async)" [value]="option">{{option}}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="record-division" class="form-label">Division</label>
+        <select id="record-division" class="form-select" [formControlName]="'division'">
+          <option *ngFor="let option of (divisionFilter$ | async)" [value]="option">{{option}}</option>
+        </select>
+      </div>
+      <label for="record-budget" class="form-label">Budget</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <input id="record-budget" type="text" class="form-control" [formControlName]="'budget'" />
+      </div>
+      <div class="mb-3">
+        <label for="record-status" class="form-label">Division</label>
+        <select id="record-status" class="form-select" [formControlName]="'status'">
+          <option *ngFor="let option of (statusFilter$ | async)" [value]="option">{{option | titlecase}}</option>
+        </select>
+      </div>
+    </form>
+    <div class="text-end">
+      <button type="button" class="btn btn-outline-success" [disabled]="editingRecordForm.untouched" (click)="offcanvas.close('Save click')">Save</button>
+    </div>
+  </div>
+</ng-template>

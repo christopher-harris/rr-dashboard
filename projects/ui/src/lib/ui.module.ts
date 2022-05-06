@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
-import {BadgeModule} from './components/badge/badge.module';
-import {CardModule, DateRangePickerModule} from './components';
+import {BadgeModule, CardModule, DateRangePickerModule, ModalModule} from './components';
 
 const uiModules = [
   BadgeModule,
   CardModule,
-  DateRangePickerModule
+  DateRangePickerModule,
+  ModalModule
 ];
 
 @NgModule({
@@ -17,4 +17,5 @@ const uiModules = [
     ...uiModules
   ],
 })
-export class UiModule {}
+export class UiModule {
+}

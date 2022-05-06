@@ -1,5 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbCalendar, NgbDate, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDatepicker,
+  NgbDateStruct
+} from '@ng-bootstrap/ng-bootstrap';
+
+export interface DateRange {
+  from: NgbDate | null;
+  to: NgbDate | null;
+}
 
 @Component({
   selector: 'ui-date-range-picker',
@@ -7,8 +19,10 @@ import {NgbCalendar, NgbDate, NgbDateAdapter, NgbDateParserFormatter, NgbDateStr
   styleUrls: ['./date-range-picker.component.scss']
 })
 export class DateRangePickerComponent implements OnInit {
+  @ViewChild(NgbDatepicker) datepicker: NgbDatepicker;
   @Input() oldestDate: NgbDateStruct;
   @Input() earliestDate: NgbDateStruct;
+  @Output() datesChanged: EventEmitter<any> = new EventEmitter<any>();
   hoveredDate: NgbDate | null = null;
 
   fromDate: NgbDate | null;
@@ -17,8 +31,8 @@ export class DateRangePickerComponent implements OnInit {
   constructor(private calendar: NgbCalendar,
               public ngbDateAdapter: NgbDateAdapter<any>,
               public formatter: NgbDateParserFormatter) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    // this.fromDate = calendar.getToday();
+    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
   ngOnInit(): void {
@@ -34,6 +48,8 @@ export class DateRangePickerComponent implements OnInit {
       this.toDate = null;
       this.fromDate = date;
     }
+    const range: DateRange = {from: this.fromDate, to: this.toDate};
+    this.datesChanged.emit(range);
   }
 
   isHovered(date: NgbDate) {
@@ -51,6 +67,13 @@ export class DateRangePickerComponent implements OnInit {
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
     const parsed = this.formatter.parse(input);
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+
+  clearDates() {
+    this.toDate = null;
+    this.fromDate = null;
+    const range: DateRange = {from: this.fromDate, to: this.toDate};
+    this.datesChanged.emit(range);
   }
 
 }

@@ -34,6 +34,9 @@
         </ng-container>
       </ng-container>
     </td>
+    <td>
+      <i class="bi bi-pencil-square" (click)="onEditClick(record)"></i>
+    </td>
   </tr>
   </tbody>
 
@@ -63,5 +66,5 @@
 </ng-template>
 
 <ng-template #dateTemplate let-date>
-  <p class="m-0 text-center">{{date}}</p>
+  <p class="m-0 text-center">{{date | date: 'MM/d/yy'}}</p>
 </ng-template>

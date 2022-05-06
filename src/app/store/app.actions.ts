@@ -14,7 +14,7 @@ export class GetCurrentUserSuccess implements Action {
   readonly type = AppActionTypes.GET_CURRENT_USER_SUCCESS;
 
   constructor(public payload: any) {
-    console.log(payload);
+    // console.log(payload);
   }
 }
 
@@ -22,7 +22,7 @@ export class GetCurrentUserError implements Action {
   readonly type = AppActionTypes.GET_CURRENT_USER_ERROR;
 
   constructor(public payload: any) {
-    console.log(payload);
+    // console.log(payload);
   }
 }
 

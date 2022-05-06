@@ -17,7 +17,7 @@ export class SetProjectManagersSuccess implements Action {
   readonly type = ProjectManagersActionTypes.SET_PROJECT_MANAGERS_SUCCESS;
 
   constructor(public payload: any[]) {
-    console.log(payload);
+    // console.log(payload);
   }
 
 }

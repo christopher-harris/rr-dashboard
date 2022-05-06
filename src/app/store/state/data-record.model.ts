@@ -4,9 +4,13 @@ export interface DataRecord {
   project_owner: string;
   budget: number;
   status: string;
-  created: string | Date | null;
-  modified: string | Date | null;
+  created: string | null;
+  modified: string | null;
   id: string;
+  metadata: {
+    jsCreatedDate: Date | null,
+    jsModifiedDate: Date | null,
+  }
 }
 
 export type DataRecords = DataRecord[];

@@ -1,24 +1,86 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import * as fromData from './data.reducer';
+import {DataState, PropertyFilter} from './data.reducer';
 import * as _ from 'lodash';
 import {DataRecord} from '../state/data-record.model';
+import * as dayjs from 'dayjs';
+import * as isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import * as isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import * as isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isBetween);
 
 export const selectDataFeature = createFeatureSelector('records');
 
-export const getData = createSelector(fromData.getUserState, (state) => state);
+export const recordsState = createSelector(fromData.getRecordsState, (state) => state);
 
 const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = fromData.dataAdapter.getSelectors(getData);
+} = fromData.dataAdapter.getSelectors(recordsState);
 
 export const selectRecordIds = selectIds;
 
 export const selectRecordEntities = selectEntities;
 
-export const selectAllRecords = selectAll;
+export const getSearchQuery = createSelector(
+  fromData.getRecordsState,
+  (state) => state.searchQuery
+);
+
+export const getDateRangeFilter = createSelector(
+  fromData.getRecordsState,
+  (state: DataState) => state.filterDateRange
+);
+
+export const selectPropertyFilters = createSelector(
+  recordsState,
+  (state: DataState) => state.propertyFilters
+);
+
+export const selectActivePropertyFilters = createSelector(
+  recordsState,
+  (state: DataState) => state.selectedPropertyFilters
+);
+
+export const selectAllRecords = createSelector(
+  selectAll,
+  getSearchQuery,
+  getDateRangeFilter,
+  selectActivePropertyFilters,
+  (data, searchQuery, dateRangeFilter, propertyFilters) => {
+    if (searchQuery) {
+      return data.filter((record: DataRecord) => {
+        return (
+          record.title.toLowerCase().includes(searchQuery as string) ||
+          record.status.toLowerCase().includes(searchQuery as string) ||
+          record.project_owner.toLowerCase().includes(searchQuery as string) ||
+          record.division.toLowerCase().includes(searchQuery as string) ||
+          record.budget.toString().toLowerCase().includes(searchQuery as string)
+        );
+      });
+    }
+    if (dateRangeFilter !== null) {
+      return data.filter((record: DataRecord) => {
+        if (dateRangeFilter.from && dateRangeFilter.to === null) {
+          return dayjs(record.metadata.jsCreatedDate).isSameOrAfter(dateRangeFilter.from, 'day');
+        } else if (dateRangeFilter.from && dateRangeFilter.to) {
+          return dayjs(record.metadata.jsCreatedDate).isBetween(dateRangeFilter.from, dateRangeFilter.to, 'day') || dayjs(record.metadata.jsModifiedDate).isBetween(dateRangeFilter.from, dateRangeFilter.to, 'day');
+        } else {
+          return data;
+        }
+      })
+    }
+    // if (propertyFilters.length > 0) {
+    //   console.log(propertyFilters);
+    // }
+    return data;
+  }
+);
 
 export const getTotalBudget = createSelector(
   selectAll,
@@ -52,5 +114,13 @@ export const getEarliestDate = createSelector(
   (data: DataRecord[]) => {
     const mostRecentModified: DataRecord = _.orderBy(data, ({modified}) => modified === null ? '' : modified, ['desc'])[0];
     return mostRecentModified.modified;
+  }
+);
+
+export const selectPropertyFilterValues = createSelector(
+  selectPropertyFilters,
+  (filters: PropertyFilter[], property: any) => {
+    const filter = filters.find((filter) => filter.property === property);
+    return filter ? filter.values : [];
   }
 );
