@@ -17,29 +17,30 @@ import {ProjectManagersEffects} from './store/project-managers';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
-    AppRoutingModule,
-    SharedModule,
-    UiModule,
-    StoreModule.forRoot({
-      app: appReducer
-    }),
-    StoreModule.forFeature('records', dataReducer),
-    StoreModule.forFeature('project-managers', projectManagersReducer),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
-    EffectsModule.forRoot([AppEffects]),
-    EffectsModule.forFeature([DataEffects]),
-    EffectsModule.forFeature([ProjectManagersEffects]),
-    NgbModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
+        AppRoutingModule,
+        SharedModule,
+        UiModule,
+        StoreModule.forRoot({
+            app: appReducer
+        }),
+        StoreModule.forFeature('records', dataReducer),
+        StoreModule.forFeature('project-managers', projectManagersReducer),
+        StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+        EffectsModule.forRoot([AppEffects]),
+        EffectsModule.forFeature([DataEffects]),
+        EffectsModule.forFeature([ProjectManagersEffects]),
+        NgbModule,
+    ],
+    providers: [],
+    exports: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -1,0 +1,14 @@
+<h5 class="text-muted fw-bold">Project Owner Budgets</h5>
+<ui-card>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let project of projectOwnersData | orderBy: 'budget': 'desc'; let index = index;"
+        [ngClass]="{'list-group-item-danger': project.budget > 100000, 'list-group-item-warning': project.budget > 60000}"
+        class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <img *ngIf="randomUsers" [src]="randomUsers[index]?.picture?.thumbnail" width="30" height="30" class="rounded-circle mr-3" />
+        <span class="pl-3">{{project.owner}}</span>
+      </div>
+      <rr-badge [pillBadge]="true" color="success">{{project.budget | currency}}</rr-badge>
+    </li>
+  </ul>
+</ui-card>

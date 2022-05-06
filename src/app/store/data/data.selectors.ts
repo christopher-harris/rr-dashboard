@@ -75,9 +75,6 @@ export const selectAllRecords = createSelector(
         }
       })
     }
-    // if (propertyFilters.length > 0) {
-    //   console.log(propertyFilters);
-    // }
     return data;
   }
 );
@@ -122,5 +119,23 @@ export const selectPropertyFilterValues = createSelector(
   (filters: PropertyFilter[], property: any) => {
     const filter = filters.find((filter) => filter.property === property);
     return filter ? filter.values : [];
+  }
+);
+
+export const selectDivisionRecords = createSelector(
+  selectAll,
+  (records: DataRecord[], division: string) => {
+    return records.filter((record) => {
+      return record.division === division;
+    })
+  }
+);
+
+export const selectProjectOwnersRecords = createSelector(
+  selectAll,
+  (records: DataRecord[], projectOwner: string) => {
+    return records.filter((record: DataRecord) => {
+      return record.project_owner === projectOwner;
+    });
   }
 );

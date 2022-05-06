@@ -69,13 +69,13 @@ export class FullDataComponent implements OnInit {
       this.recordKeys.set(key, DataRecordKeysEnum[key]);
     });
     this.store.dispatch(new dataStore.GetData());
-    this.records$.subscribe(x => console.log(x));
+    // this.records$.subscribe(x => console.log(x));
     this.searchForm.valueChanges.subscribe((value) => {
       this.store.dispatch(new SearchData(value));
     });
-    this.titleFilterControl.valueChanges.subscribe((value) => {
-      console.log(value);
-    })
+    // this.titleFilterControl.valueChanges.subscribe((value) => {
+    //   console.log(value);
+    // })
   }
 
   originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
@@ -97,11 +97,11 @@ export class FullDataComponent implements OnInit {
   }
 
   getPropertyFilterValues(something: any) {
-    console.log(something);
+    // console.log(something);
   }
 
   addPropertyFilter(property: any, value: any) {
-    console.table(property, value);
+    // console.table(property, value);
     this.selectedFilters.find((filter) => {
       if (filter.property === property) {
         filter.values = [value];
@@ -116,14 +116,14 @@ export class FullDataComponent implements OnInit {
 
   openEditDrawer(content: TemplateRef<any>) {
     this.offcanvasService.open(content, {position: 'end'}).result.then((result) => {
-      console.log(`Closed with: ${result}`);
+      // console.log(`Closed with: ${result}`);
       this.store.dispatch(new UpdateRecord({
         ...this.editingRecordForm.value,
         budget: +this.editingRecordForm.get('budget')?.value,
         modified: new Date().toString()
       }));
     }, (reason) => {
-      console.log(`Dismissed ${this.getDrawerDismissReason(reason)}`);
+      // console.log(`Dismissed ${this.getDrawerDismissReason(reason)}`);
       this.editingRecordForm.reset();
     });
   }

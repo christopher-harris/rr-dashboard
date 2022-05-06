@@ -34,4 +34,15 @@ export class UserService {
     );
   }
 
+  getMultipleUsers(count: number): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('format', 'json')
+      .set('nat', 'us')
+      .set('exc', 'name,id')
+      .set('results', count.toString());
+    return this.http.get<RandomUserResponse>('https://randomuser.me/api/', {params}).pipe(
+      map((response: RandomUserResponse) => response.results)
+    );
+  }
+
 }

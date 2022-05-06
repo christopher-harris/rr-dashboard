@@ -9,13 +9,17 @@ import {RecentActivityComponent} from './components/recent-activity/recent-activ
 import {SharedModule} from '../shared/shared/shared.module';
 import {UiModule} from '../../../projects/ui/src/lib/ui.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DataByOwnerComponent} from './components/data-by-owner/data-by-owner.component';
+import {DataByDivisionComponent} from './components/data-by-division/data-by-division.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     QuickStatsComponent,
     FullDataComponent,
-    RecentActivityComponent
+    RecentActivityComponent,
+    DataByOwnerComponent,
+    DataByDivisionComponent
   ],
   imports: [
     CommonModule,
